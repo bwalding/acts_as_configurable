@@ -182,7 +182,7 @@ module Nkryptic # :nodoc:
     
     class ProxySettings # :nodoc:
       alias_method '__class', 'class'
-      instance_methods.each { |m| undef_method m unless m =~ /(^__|^nil\?$|^send$)/ }
+      instance_methods.each { |m| undef_method m unless m =~ /(^__|^object_id$|^nil\?$|^send$)/ }
       
       #class_inheritable_accessor(:sql_word)
       
@@ -410,7 +410,7 @@ module Nkryptic # :nodoc:
     class ProxySetting # :nodoc:
       
       alias_method '__class', 'class'
-      instance_methods.each { |m| undef_method m unless m =~ /(^__|^nil\?$|^send$)/ }
+      instance_methods.each { |m| undef_method m unless m =~ /(^__|^object_id$|^nil\?$|^send$)/ }
       
       def initialize(setting)
         @_setting = setting
