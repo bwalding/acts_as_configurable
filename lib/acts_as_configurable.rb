@@ -495,3 +495,7 @@ module Nkryptic # :nodoc:
 
   end
 end
+
+ActiveRecord::Base.send(:include, Nkryptic::ActsAsConfigurable)
+
+require 'configurable_setting'
