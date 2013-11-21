@@ -324,29 +324,37 @@ module Nkryptic # :nodoc:
       private
       
       def find_settings
+        finder = settings
+
         if @reference.is_a? Class
-          settings.find( :all, 
-              :conditions => [ "#{@@sql_word}_type = ? and #{@@sql_word}_id IS NULL", @reference.to_s ] )
+          finder = finder.where("#{@@sql_word}_type = ?", @reference.to_s)
+          finder = finder.where("#{@@sql_word}_id IS NULL")
         elsif @reference
-          settings.find( :all, 
-              :conditions => [ "#{@@sql_word}_type = ? and #{@@sql_word}_id = ?", @reference.class.to_s, @reference.id ] )
+          finder = finder.where("#{@@sql_word}_type = ?", @reference.to_s)
+          finder = finder.where("#{@@sql_word}_id = ?", @reference.id)
         else
-          settings.find( :all, 
-              :conditions => [ "#{@@sql_word}_type is null and #{@@sql_word}_id is null" ] )
+          finder = finder.where("#{@@sql_word}_type is null")
+          finder = finder.where("#{@@sql_word}_id is null")
         end
+
+        return finder.all
       end
       
       def find_setting(name)
+        finder = settings.where(name: name)
+            
         if @reference.is_a? Class
-          settings.find( :first, 
-              :conditions => [ "name = ? and #{@@sql_word}_type = ? and #{@@sql_word}_id IS NULL", name, @reference.to_s ] )
+          finder = finder.where("#{@@sql_word}_type = ?", @reference.to_s)
+          finder = finder.where("#{@@sql_word}_id IS NULL")
         elsif @reference
-          settings.find( :first, 
-              :conditions => [ "name = ? and #{@@sql_word}_type = ? and #{@@sql_word}_id = ?", name, @reference.class.to_s, @reference.id ] )
+          finder = finder.where("#{@@sql_word}_type = ?", @reference.to_s)
+          finder = finder.where("#{@@sql_word}_id = ?", @reference.id)
         else
-          settings.find( :first, 
-              :conditions => [ "name = ? and #{@@sql_word}_type is null and #{@@sql_word}_id is null", name ] )
+          finder = finder.where("#{@@sql_word}_type is null")
+          finder = finder.where("#{@@sql_word}_id is null")
         end
+
+        return finder.first
       end
       
       def create_setting(name)
